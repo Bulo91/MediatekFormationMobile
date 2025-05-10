@@ -6,46 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".vue.FormationsActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <!-- Champ de texte : 66% de la largeur -->
+    <EditText
+        android:id="@+id/txtFiltre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/filtrer_hint"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnFiltrer"
+        app:layout_constraintWidth_percent="0.66" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <!-- Bouton : 34% de la largeur -->
+    <Button
+        android:id="@+id/btnFiltrer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/filtrer"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtFiltre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.34" />
 
-            <EditText
-                android:id="@+id/txtFiltre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName" />
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lstFormations"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltrer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-            <Button
-                android:id="@+id/btnFiltrer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/teal_200"
-                android:fontFamily="sans-serif-medium"
-                android:text="filtrer"
-                android:textColor="@color/teal_700"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lstFormations"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical" />
-        </LinearLayout>
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MediatekFormationMobile</string>
+    <string name="filtrer">Filtrer</string>
+    <string name="filtrer_hint">Filtrer par titre...</string>
 </resources>

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Controle {
 
-    private static Controle instance = null ;
+    private static Controle instance = null;
     private ArrayList<Formation> lesFormations = new ArrayList<>();
     private Formation formation = null;
     private static AccesDistant accesDistant;
@@ -15,7 +15,7 @@ public class Controle {
     /**
      * constructeur privé
      */
-    private Controle(){
+    private Controle() {
         super();
     }
 
@@ -23,8 +23,8 @@ public class Controle {
      * récupération de l'instance unique de Controle
      * @return instance
      */
-    public static final Controle getInstance(){
-        if(Controle.instance == null){
+    public static final Controle getInstance() {
+        if (Controle.instance == null) {
             Controle.instance = new Controle();
             accesDistant = AccesDistant.getInstance();
             accesDistant.envoi("tous", "formation", null);
@@ -48,5 +48,17 @@ public class Controle {
         this.lesFormations = lesFormations;
     }
 
+    /**
+     * Retourne les formations dont le titre contient le filtre (insensible à la casse)
+     */
+    public ArrayList<Formation> getFormationsFiltrees(String filtre) {
+        ArrayList<Formation> listeFiltree = new ArrayList<>();
+        filtre = filtre.toUpperCase();
+        for (Formation formation : lesFormations) {
+            if (formation.getTitle().toUpperCase().contains(filtre)) {
+                listeFiltree.add(formation);
+            }
+        }
+        return listeFiltree;
+    }
 }
-

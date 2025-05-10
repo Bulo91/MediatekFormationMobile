@@ -125,4 +125,3 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
     }
 
 }
-

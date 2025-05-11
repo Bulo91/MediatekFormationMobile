@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void creerMenu(){
         ecouteMenu((ImageButton)findViewById(R.id.btnFormations), FormationsActivity.class);
+        ecouteMenu((ImageButton)findViewById(R.id.btnFavoris), FavorisActivity.class);
     }
+
 
     /**
      * procédure événementielle sur le clic d'une image du menu

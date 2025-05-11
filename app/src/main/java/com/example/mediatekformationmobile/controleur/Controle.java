@@ -1,6 +1,8 @@
 package com.example.mediatekformationmobile.controleur;
 
+import com.example.mediatekformationmobile.MyApplication;
 import com.example.mediatekformationmobile.modele.AccesDistant;
+import com.example.mediatekformationmobile.modele.FavorisSQLite;
 import com.example.mediatekformationmobile.modele.Formation;
 
 import java.util.ArrayList;
@@ -13,15 +15,14 @@ public class Controle {
     private static AccesDistant accesDistant;
 
     /**
-     * constructeur privé
+     * Constructeur privé
      */
     private Controle() {
         super();
     }
 
     /**
-     * récupération de l'instance unique de Controle
-     * @return instance
+     * Récupération de l'instance unique de Controle
      */
     public static final Controle getInstance() {
         if (Controle.instance == null) {
@@ -44,21 +45,44 @@ public class Controle {
         return lesFormations;
     }
 
+    /**
+     * Met à jour la liste des formations et supprime les favoris locaux obsolètes
+     */
     public void setLesFormations(ArrayList<Formation> lesFormations) {
         this.lesFormations = lesFormations;
+
+        // Nettoyage des favoris locaux supprimés du serveur
+        FavorisSQLite favorisSQLite = new FavorisSQLite(MyApplication.getContext());
+        ArrayList<Integer> favoris = favorisSQLite.getTousLesFavoris();
+
+        for (int id : favoris) {
+            boolean existeEncore = false;
+            for (Formation f : lesFormations) {
+                if (f.getId() == id) {
+                    existeEncore = true;
+                    break;
+                }
+            }
+            if (!existeEncore) {
+                favorisSQLite.supprimerFavori(id);
+            }
+        }
     }
 
     /**
-     * Retourne les formations dont le titre contient le filtre (insensible à la casse)
+     * Retourne la liste des formations dont le titre contient le filtre (insensible à la casse)
      */
     public ArrayList<Formation> getFormationsFiltrees(String filtre) {
-        ArrayList<Formation> listeFiltree = new ArrayList<>();
-        filtre = filtre.toUpperCase();
-        for (Formation formation : lesFormations) {
-            if (formation.getTitle().toUpperCase().contains(filtre)) {
-                listeFiltree.add(formation);
+        ArrayList<Formation> formationsFiltrees = new ArrayList<>();
+        if (filtre != null && !filtre.isEmpty()) {
+            for (Formation f : lesFormations) {
+                if (f.getTitle().toUpperCase().contains(filtre.toUpperCase())) {
+                    formationsFiltrees.add(f);
+                }
             }
+        } else {
+            formationsFiltrees = new ArrayList<>(lesFormations);
         }
-        return listeFiltree;
+        return formationsFiltrees;
     }
 }

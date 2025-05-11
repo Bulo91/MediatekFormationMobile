@@ -5,8 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,7 +20,7 @@ public class FormationsActivity extends AppCompatActivity {
     private Controle controle;
     private Button btnFiltrer;
     private EditText txtFiltre;
-    private ArrayList<Formation> lesFormations;
+    private RecyclerView lstFormations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,42 +30,32 @@ public class FormationsActivity extends AppCompatActivity {
     }
 
     /**
-     * initialisations
+     * Initialisations
      */
     private void init() {
         controle = Controle.getInstance();
-
         btnFiltrer = findViewById(R.id.btnFiltrer);
         txtFiltre = findViewById(R.id.txtFiltre);
+        lstFormations = findViewById(R.id.lstFormations);
 
-        // Attente de 0.5s avant d'afficher la liste initiale
-        new Handler().postDelayed(() -> {
-            lesFormations = controle.getLesFormations();
-            afficherListe();
-        }, 500);
+        // Affiche toutes les formations au démarrage
+        creerListe(controle.getLesFormations());
 
-        btnFiltrer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String filtre = txtFiltre.getText().toString().trim();
-                if (filtre.isEmpty()) {
-                    lesFormations = controle.getLesFormations();
-                } else {
-                    lesFormations = controle.getFormationsFiltrees(filtre);
-                }
-                afficherListe();
-            }
+        // Clic sur le bouton "Filtrer"
+        btnFiltrer.setOnClickListener(v -> {
+            String filtre = txtFiltre.getText().toString().trim();
+            ArrayList<Formation> resultats = controle.getFormationsFiltrees(filtre);
+            creerListe(resultats);
         });
     }
 
     /**
-     * affichage de la liste dans le RecyclerView
+     * Création de la liste à afficher
      */
-    private void afficherListe() {
-        if (lesFormations != null) {
-            Collections.sort(lesFormations, Collections.<Formation>reverseOrder());
-            RecyclerView lstFormations = findViewById(R.id.lstFormations);
-            FormationListAdapter adapter = new FormationListAdapter(lesFormations, FormationsActivity.this);
+    private void creerListe(ArrayList<Formation> liste) {
+        if (liste != null) {
+            Collections.sort(liste, Collections.reverseOrder());
+            FormationListAdapter adapter = new FormationListAdapter(liste, FormationsActivity.this);
             lstFormations.setAdapter(adapter);
             lstFormations.setLayoutManager(new LinearLayoutManager(FormationsActivity.this));
         }
